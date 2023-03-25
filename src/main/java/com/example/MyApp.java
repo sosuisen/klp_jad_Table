@@ -17,7 +17,7 @@ public class MyApp extends Application {
 	        var scene = new Scene(root);
 	        scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
 	        
-	        stage.setTitle("JavaFX and Gradle");
+	        stage.setTitle("ToDo App");
 	        stage.setScene(scene);
 	        stage.show();
 		} catch (IOException e) {

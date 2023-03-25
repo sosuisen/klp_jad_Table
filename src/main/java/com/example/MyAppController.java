@@ -25,18 +25,18 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class MyAppController {
-	final String dataPath = "./tododata.json";
+	private final String dataPath = "./tododata.json";
 
-	final String TODO_COMPLETED = "完了";
-	final String TODO_TITLE = "タイトル";
-	final String TODO_DATE = "日付";
-	final LinkedHashMap<String, Integer> MENU = new LinkedHashMap<String, Integer>() {{
+	private final String TODO_COMPLETED = "完了";
+	private final String TODO_TITLE = "タイトル";
+	private final String TODO_DATE = "日付";
+	private final LinkedHashMap<String, Integer> MENU = new LinkedHashMap<String, Integer>() {{
 		put(TODO_COMPLETED, 0);
 		put(TODO_TITLE, 1);
 		put(TODO_DATE, 2);
 	}};
-	final String SORT_ASCENDANT = "昇順";
-	final String SORT_DESCENDANT = "降順";
+	private final String SORT_ASCENDANT = "昇順";
+	private final String SORT_DESCENDANT = "降順";
 	
 	private ArrayList<ToDo> todos = new ArrayList<>() {
 		// Use instance initializer of anonymouse class
@@ -124,6 +124,7 @@ public class MyAppController {
 	
 	private void showInfo(String txt) {
 		Alert dialog = new Alert(AlertType.INFORMATION);
+		dialog.setTitle("アプリの情報");
 		dialog.setHeaderText(null);
 		dialog.setContentText(txt);
 		dialog.showAndWait();
