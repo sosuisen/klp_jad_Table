@@ -25,7 +25,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class MyAppController {
-	private final String dataPath = "./tododata.json";
 
 	private final String TODO_COMPLETED = "完了";
 	private final String TODO_TITLE = "タイトル";
