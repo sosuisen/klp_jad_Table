@@ -40,10 +40,11 @@ public class MyAppController {
 	private ArrayList<ToDo> todos = new ArrayList<>() {
 		// Use instance initializer of anonymouse class
 		{
-			add(new ToDo(1, "Design", "2022-12-01", true));
-			add(new ToDo(2, "Implementation", "2022-12-07", false));
+			add(new ToDo(0, "Design", "2022-12-01", true));
+			add(new ToDo(1, "Implementation", "2022-12-07", false));
 		}
 	};
+	
 	
     @FXML
     private Button addBtn;
@@ -114,7 +115,11 @@ public class MyAppController {
 	}
     
 	private ToDo create(String title, String date) {
-		int newId = todos.stream().max((todo1, todo2) -> todo1.getId() - todo2.getId()).get().getId() + 1;
+		int newId;
+		if(todos.size() > 0)
+			newId = todos.stream().max((todo1, todo2) -> todo1.getId() - todo2.getId()).get().getId() + 1;
+		else 
+			newId = 0;
 		var newToDo = new ToDo(newId, title, date, false);
 		todos.add(newToDo);
 
@@ -179,7 +184,7 @@ public class MyAppController {
 			ToDo newToDo = create(title, localDate.toString());
 			todoListItems.add(createToDoHBox(newToDo));
 			sort(sortTypeMenu.getValue(), sortOrderMenu.getValue());
-			titleField.setText("");
+			titleField.clear();
 			System.out.println("追加[" + newToDo.getId() +"] " + title);
 		};
 		titleField.setOnAction(handler);
