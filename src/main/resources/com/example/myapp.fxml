@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox id="root-vbox" prefHeight="400.0" prefWidth="410.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.MyAppController">
+<VBox id="root-vbox" prefHeight="400.0" prefWidth="427.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.MyAppController">
 	<children>
 		<MenuBar>
 			<menus>
@@ -31,12 +31,13 @@
 			<children>
 				<Label minWidth="-Infinity" styleClass="header-label" text="ToDo">
 				</Label>
-				<TextField fx:id="titleField" HBox.hgrow="ALWAYS">
+				<TextField fx:id="headerTitleField" HBox.hgrow="ALWAYS">
 				</TextField>
 				<Label minWidth="-Infinity" styleClass="header-label" text="日付">
 				</Label>
-				<DatePicker fx:id="datePicker" prefWidth="100.0" HBox.hgrow="NEVER">
+				<DatePicker fx:id="headerDatePicker" prefHeight="23.0" prefWidth="115.0" HBox.hgrow="NEVER">
 				</DatePicker>
+            <TextField fx:id="headerPriorityField" prefHeight="23.0" prefWidth="32.0" />
 				<Button fx:id="addBtn" minWidth="-Infinity" mnemonicParsing="false" text="追加">
 				</Button>
 			</children>

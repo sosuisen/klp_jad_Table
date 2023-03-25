@@ -11,12 +11,14 @@ public class ToDo {
 	 */
 	private String date;
 	private boolean completed;
+	private int priority;
 	
-	public ToDo(int id, String title, String date, boolean completed) {
+	public ToDo(int id, String title, String date, boolean completed, int priority) {
 		this.id = id;
 		this.title = title;
 		this.date = date;
 		this.completed = completed;
+		this.priority = priority;			
 	}
 	public int getId() {
 		return id;
@@ -29,6 +31,12 @@ public class ToDo {
 	}
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	public int getPriority() {
+		return priority;
+	}
+	public void setPriority(int priority) {
+		this.priority = priority;
 	}
 	/**
 	 * @return date string e.g. 2022-12-01
