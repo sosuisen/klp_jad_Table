@@ -78,6 +78,7 @@ public class MyAppController {
 		completedCheckBox.getStyleClass().add("todo-completed");
 		completedCheckBox.setOnAction(e -> {
 			System.out.println("チェック更新[" + todo.getId() +"] " + completedCheckBox.isSelected());
+			todo.setCompleted(completedCheckBox.isSelected());
 		});
 
 		var titleField = new TextField(todo.getTitle());
@@ -85,10 +86,12 @@ public class MyAppController {
 		HBox.setHgrow(titleField, Priority.ALWAYS);
 		titleField.setOnAction(e -> {
 			System.out.println("タイトル更新[" + todo.getId() +"] " + titleField.getText());
+			todo.setTitle(titleField.getText());
 		});
 		titleField.focusedProperty().addListener((observable, oldProperty, newProperty) -> {
 			if (!newProperty) {
 				System.out.println("タイトル更新[" + todo.getId() +"] " + titleField.getText());
+				todo.setTitle(titleField.getText());
 			}
 		});
 
@@ -98,6 +101,7 @@ public class MyAppController {
 		HBox.setHgrow(datePicker, Priority.NEVER);
 		datePicker.setOnAction(e -> {
 			System.out.println("日付更新[" + todo.getId() +"] " + datePicker.getValue().toString());
+			todo.setDate(datePicker.getValue().toString());
 		});
 		
 		var deleteBtn = new Button("削除");
@@ -108,6 +112,7 @@ public class MyAppController {
 
 		deleteBtn.setOnAction(e -> {
 			System.out.println("削除[" + todo.getId() +"]");
+			todos.remove(todo);
 			todoListItems.remove(todoItem);
 		});
 
