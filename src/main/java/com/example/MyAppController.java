@@ -19,6 +19,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -70,6 +71,9 @@ public class MyAppController {
 
 	@FXML
 	private TextField headerPriorityField;
+
+	@FXML
+	private ScrollPane scrollPane;
 
 	@FXML
 	private VBox todoListVBox;
@@ -244,6 +248,9 @@ public class MyAppController {
 		menuItemAbout.setOnAction(e -> showInfo("ToDo App"));
 
 		menuItemClose.setOnAction(e -> Platform.exit());
+
+		// VBoxの末尾にあるScrollPaneを、ウィンドウサイズに応じて高さ最大化
+		VBox.setVgrow(scrollPane, Priority.ALWAYS);
 	}
 
 }
