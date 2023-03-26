@@ -19,6 +19,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -50,7 +51,7 @@ public class MyAppController {
     private Button addBtn;
 
     @FXML
-    private DatePicker datePicker;
+    private DatePicker headerDatePicker;
 
     @FXML
     private MenuItem menuItemAbout;
@@ -64,11 +65,14 @@ public class MyAppController {
     @FXML
     private ChoiceBox<String> sortTypeMenu;
 
-    @FXML
-    private TextField titleField;
+	@FXML
+	private TextField headerTitleField;
 
-    @FXML
-    private VBox todoListVBox;
+	@FXML
+	private ScrollPane scrollPane;
+
+	@FXML
+	private VBox todoListVBox;
 
 	private ObservableList<Node> todoListItems;
 	
@@ -171,7 +175,7 @@ public class MyAppController {
 
 
 		// Set today
-		datePicker.setValue(LocalDate.now());
+		headerDatePicker.setValue(LocalDate.now());
 
 		todoListItems = todoListVBox.getChildren();
 
@@ -182,22 +186,23 @@ public class MyAppController {
 		});
 
 		EventHandler<ActionEvent> handler = e -> {
-			var title = titleField.getText();
+			var title = headerTitleField.getText();
 			if (title.equals(""))
 				return;
-			LocalDate localDate = datePicker.getValue(); // 2022-12-01
+			LocalDate localDate = headerDatePicker.getValue(); // 2022-12-01
 			ToDo newToDo = create(title, localDate.toString());
 			todoListItems.add(createToDoHBox(newToDo));
 			sort(sortTypeMenu.getValue(), sortOrderMenu.getValue());
-			titleField.clear();
+			headerTitleField.clear();
 			System.out.println("追加[" + newToDo.getId() +"] " + title);
 		};
-		titleField.setOnAction(handler);
+		headerTitleField.setOnAction(handler);
 		addBtn.setOnAction(handler);
 		
 		menuItemAbout.setOnAction(e -> showInfo("ToDo App"));
-		
-		menuItemClose.setOnAction(e -> 	Platform.exit());
-    }
+		menuItemClose.setOnAction(e -> Platform.exit());
 
+		// VBoxの末尾にあるScrollPaneを、ウィンドウサイズに応じて高さ最大化
+		VBox.setVgrow(scrollPane, Priority.ALWAYS);
+	}
 }
