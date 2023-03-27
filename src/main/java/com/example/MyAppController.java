@@ -117,27 +117,13 @@ public class MyAppController {
 		priorityField.setPrefWidth(40);
 		HBox.setHgrow(priorityField, Priority.NEVER);
 		priorityField.setOnAction(e -> {
-			String txt = priorityField.getText();
-			int priority;
-			try {
-				priority = Integer.parseInt(txt);
-			} catch (NumberFormatException nfe) {
-				priority = 1;
-				priorityField.setText("1");
-			}
+			int priority = getPriority(priorityField);
 			System.out.println("優先度更新[" + todo.getId() + "] " + priority);
-			todo.setPriority(Integer.parseInt(txt));
+			todo.setPriority(priority);
 		});
 		priorityField.focusedProperty().addListener((observable, oldProperty, newProperty) -> {
 			if (!newProperty) {
-				String txt = priorityField.getText();
-				int priority;
-				try {
-					priority = Integer.parseInt(txt);
-				} catch (NumberFormatException nfe) {
-					priority = 1;
-					priorityField.setText("1");
-				}
+				int priority = getPriority(priorityField);
 				System.out.println("優先度更新[" + todo.getId() + "] " + priority);
 				todo.setPriority(priority);
 			}
@@ -201,6 +187,18 @@ public class MyAppController {
 		FXCollections.sort(todoListItems, comp);
 	}
 
+	private int getPriority(TextField tf) {
+		String txt = tf.getText();
+		int priority;
+		try {
+			priority = Integer.parseInt(txt);
+		} catch (NumberFormatException nfe) {
+			priority = 1;
+			tf.setText("1");
+		}
+		return priority;
+	}
+
 	public void initialize() {
 		sortTypeMenu.getItems().addAll(MENU.keySet());
 		sortTypeMenu.setValue(TODO_DATE);
@@ -227,16 +225,8 @@ public class MyAppController {
 			var title = headerTitleField.getText();
 			if (title.equals(""))
 				return;
-			LocalDate localDate = headerDatePicker.getValue(); // 2022-12-01
-			String txt = headerPriorityField.getText();
-			int priority;
-			try {
-				priority = Integer.parseInt(txt);
-			} catch (NumberFormatException nfe) {
-				priority = 1;
-				headerPriorityField.setText("1");
-			}
-			ToDo newToDo = create(title, localDate.toString(), priority);
+			LocalDate localDate = headerDatePicker.getValue(); // 2022-12-01	
+			ToDo newToDo = create(title, localDate.toString(), getPriority(headerPriorityField));
 			todoListItems.add(createToDoHBox(newToDo));
 			sort(sortTypeMenu.getValue(), sortOrderMenu.getValue());
 			headerTitleField.clear();
