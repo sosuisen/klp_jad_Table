@@ -169,12 +169,12 @@ public class MyAppController {
 
 	public void initialize() {
 		sortTypeMenu.getItems().addAll(MENU.keySet());
-		sortTypeMenu.setValue(TODO_DATE);
+		sortTypeMenu.setValue(TODO_TITLE);
 		sortTypeMenu.getSelectionModel().selectedItemProperty()
 				.addListener((observable, oldValue, newValue) -> sort(newValue, sortOrderMenu.getValue()));
 
 		sortOrderMenu.getItems().addAll(SORT_ASCENDANT, SORT_DESCENDANT);
-		sortOrderMenu.setValue(SORT_ASCENDANT);
+		sortOrderMenu.setValue(SORT_DESCENDANT);
 		sortOrderMenu.getSelectionModel().selectedItemProperty()
 				.addListener((observable, oldValue, newValue) -> sort(sortTypeMenu.getValue(), newValue));
 
@@ -184,7 +184,7 @@ public class MyAppController {
 		todoListItems = todoListVBox.getChildren();
 
 		todos.stream()
-				.sorted(Comparator.comparing(ToDo::getDate))
+				.sorted(Comparator.comparing(ToDo::getTitle).reversed())
 				.forEach(todo -> {
 					todoListItems.add(createToDoHBox(todo));
 				});
