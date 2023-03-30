@@ -42,6 +42,7 @@ public class ToDo {
 	public void setDate(String date) {
 		this.date = date;
 	}
+
 	public LocalDate getLocalDate() {
 		return LocalDate.parse(date);
 	}

@@ -1,9 +1,16 @@
 package com.example;
 
+import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -26,7 +33,10 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class MyAppController {
-
+	private String path = "data.json";
+	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
+	private Type todosType = new TypeToken<ArrayList<ToDo>>(){}.getType();
+	
 	private final String TODO_COMPLETED = "完了";
 	private final String TODO_TITLE = "タイトル";
 	private final String TODO_DATE = "日付";
@@ -77,6 +87,25 @@ public class MyAppController {
 
 	private ObservableList<Node> todoListItems;
 
+	private void save(String path) {
+		var json = gson.toJson(todos, todosType);
+		try {
+			Files.writeString(Path.of(path), json);
+		} catch (Exception err) {
+			err.printStackTrace();
+		}
+	}
+
+	private void load(String path) {
+		try {
+			var loadData = Files.readString(Path.of(path));
+			ArrayList<ToDo> loadedList = gson.fromJson(loadData, todosType);
+			todos = loadedList;
+		} catch (Exception err) {
+			err.printStackTrace();
+		}
+	}
+
 	private HBox createToDoHBox(ToDo todo) {
 		var completedCheckBox = new CheckBox();
 		completedCheckBox.setSelected(todo.isCompleted());
@@ -84,6 +113,7 @@ public class MyAppController {
 		completedCheckBox.setOnAction(e -> {
 			System.out.println("チェック更新[" + todo.getId() + "] " + completedCheckBox.isSelected());
 			todo.setCompleted(completedCheckBox.isSelected());
+			save(path);
 		});
 
 		var titleField = new TextField(todo.getTitle());
@@ -92,11 +122,13 @@ public class MyAppController {
 		titleField.setOnAction(e -> {
 			System.out.println("タイトル更新[" + todo.getId() + "] " + titleField.getText());
 			todo.setTitle(titleField.getText());
+			save(path);
 		});
 		titleField.focusedProperty().addListener((observable, oldProperty, newProperty) -> {
 			if (!newProperty) {
 				System.out.println("タイトル更新[" + todo.getId() + "] " + titleField.getText());
 				todo.setTitle(titleField.getText());
+				save(path);
 			}
 		});
 
@@ -107,6 +139,7 @@ public class MyAppController {
 		datePicker.setOnAction(e -> {
 			System.out.println("日付更新[" + todo.getId() + "] " + datePicker.getValue().toString());
 			todo.setDate(datePicker.getValue().toString());
+			save(path);
 		});
 
 		var deleteBtn = new Button("削除");
@@ -119,6 +152,7 @@ public class MyAppController {
 			System.out.println("削除[" + todo.getId() + "]");
 			todos.remove(todo);
 			todoListItems.remove(todoItem);
+			save(path);
 		});
 
 		return todoItem;
@@ -183,6 +217,8 @@ public class MyAppController {
 
 		todoListItems = todoListVBox.getChildren();
 
+		load(path);
+		
 		todos.stream()
 				.sorted(Comparator.comparing(ToDo::getDate))
 				.forEach(todo -> {
@@ -199,6 +235,7 @@ public class MyAppController {
 			sort(sortTypeMenu.getValue(), sortOrderMenu.getValue());
 			headerTitleField.clear();
 			System.out.println("追加[" + newToDo.getId() + "] " + title);
+			save(path);
 		};
 		headerTitleField.setOnAction(handler);
 		addBtn.setOnAction(handler);
